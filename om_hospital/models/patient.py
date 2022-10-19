@@ -1,13 +1,26 @@
+from datetime import date
 from odoo import models, api, fields
+from odoo.exceptions import ValidationError
 
 
 class HospitalManagement(models.Model):
     _name = 'hospital.patient'
-    _inherit = ["mail.thread","mail.activity.mixin"]
-    _description = 'Hospital Patient    '
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _description = 'Hospital Patient'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", tracking=True)
     ref = fields.Char(string="Reference")
-    age = fields.Integer(string="Age")
-    gender = fields.Selection([('female', 'Female'), ('male', 'Male')], tring='Gender', default='male')
+    date_of_birth = fields.Date(string="Birth Date")
+    age = fields.Integer(string="Age", tracking=True, compute='_compute_age')
+    gender = fields.Selection([('female', 'Female'), ('male', 'Male')], string='Gender', tracking=True)
     active = fields.Boolean(string='Active', default=True)
+
+    @api.depends('date_of_birth')
+    def _compute_age(self):
+        for rec in self:
+            today = date.today()
+            print(today)
+            if rec.date_of_birth:
+                rec.age = today.year - rec.date_of_birth.year
+            else:
+                rec.age = 0
