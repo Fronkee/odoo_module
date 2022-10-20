@@ -1,1 +1,13 @@
 postgresql pass =123
+
+ #scaffold
+ C:\Users\KIS\Desktop\odoo-15.0_com\venv\Scripts\python.exe ./odoo-bin scaffold om_odoo_inheritence custom_addons
+ 
+#
+ return super(HospitalManagement, self).create(vals_list)
+
+#    
+action = self.env.ref('om_hospital.action_cancel_appointment').read()[0]
+
+#
+super(SaleOrder, self).action_confirm()
