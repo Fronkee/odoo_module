@@ -5,8 +5,8 @@
              <field name="name">hospital.appointment.tree</field>
              <field name="model">hospital.appointment</field>
              <field name="arch" type="xml">
-                 <tree>
-                     <field name="patient_id" optional="show"/>
+                 <tree sample="1" multi_edit="1">
+                     <field name="patient_id" optional="show" widget="many2one_avatar"/>
                      <field name="ref" optional="show"/>
                      <field name="gender" optional="show"/>
                      <field name="appointment_time" optional="show"/>
@@ -18,6 +18,24 @@
                  </tree>
              </field>
          </record>
+
+         <record id="view_hospital_appointment_activity" model="ir.ui.view">
+            <field name="name">hospital.appointment.activity</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <activity string="Appointment">
+                    <field name="patient_id"/>
+                    <templates>
+                        <div t-name="activity-box">
+                            <img t-att-src="activity_image('hospital.appointment', 'avatar_128', record.patient_id.raw_value)" role="img" t-att-title="record.patient_id.value" t-att-alt="record.patient_id.value"/>
+                            <div>
+                                <field name="patient_id" display="full"/>
+                            </div>
+                        </div>
+                    </templates>
+                </activity>
+            </field>
+        </record>
 
          <record id="view_hospital_appointment_search" model="ir.ui.view">
              <field name="name">hospital.appointment.search</field>
@@ -37,7 +55,13 @@
               <field name="arch" type="xml">
                   <form string="Patient Form">
                       <header>
-                          <field name="state" widget="statusbar" nolable="1" options="{'clickable':'1'}" statusbar_visible="draft,in_consultation,done"/>
+                          <button name="action_in_consultation" string="Consultation" type="object" data-hotkey="o"/>
+                          <button name="action_done" string="Done" type="object" states="in_consultation"/>
+                          <button name="action_cancel" string="Cancel" type="object" data-hotkey="l"/>
+<!--                          <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" type="action"/>-->
+                          <field name="state" widget="statusbar" nolable="1"
+                                 statusbar_visible="draft,in_consultation,done"/>
+                          <!-- options="{'clickable':'1'}"-->
                       </header>
                       <sheet>
                           <div class="oe_title">
@@ -47,7 +71,10 @@
                           </div>
                           <group>
                               <group>
-                                <field name="patient_id"/>
+                                <field name="patient_id"
+                                       widget="res_partner_many2one"
+                                       context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"
+                                       options="{&quot;always_reload&quot;: True}"/>
                                 <field name="appointment_time"/>
                                 <button name="test_btn" string="Test" type="object" class="oe_highlight"/>
                                 <button name="%(om_hospital.action_hospital_patient)d" string="Action Button"
@@ -56,6 +83,7 @@
                               </group>
                               <group>
                                 <field name="ref"/>
+                                <field name="hide_sale_price" groups="base.group_no_one"/>
                                 <field name="gender"/>
                                 <field name="booking_date"/>
                               </group>
@@ -63,12 +91,28 @@
                           <notebook>
                               <page string="Prescription" name="prescription">
                                   <group>
-                                        <field name="prescription" placeholder="Enter prescription" nolable="1"/>
+                                        <field name="prescription" placeholder="Enter prescription" nolabel="1"
+                                        options="{'collaborative': true,'resizeable':true,'codeview':true}"/>
                                   </group>
                               </page>
                               <page string="Pharmacy" name="pharmacy">
                                   <group>
-                                        <field name="gender"/>
+                                        <field name="pharmacy_ids"  nolabel="1" >
+                                            <tree editable="bottom">
+                                                <field name="product_id"/>
+                                                <field name="price_unit"
+                                                       attrs="{'column_invisible':[('parent.hide_sale_price', '=', True)]}"/>
+                                                <field name="qty"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <field name="product_id"/>
+                                                    <field name="price_unit"
+                                                           attrs="{'column_invisible':[('parent.hide_sale_price','=',True)]}"/>
+                                                    <field name="qty"/>
+                                                </group>
+                                            </form>
+                                        </field>
                                   </group>
                               </page>
                           </notebook>
@@ -83,18 +127,18 @@
               </field>
           </record>
 
-          <record id="action_hospital_appointment" model="ir.actions.act_window">
+         <record id="action_hospital_appointment" model="ir.actions.act_window">
               <field name="name">Appointment</field>
               <field name="type">ir.actions.act_window</field>
               <field name="res_model">hospital.appointment</field>
-              <field name="view_mode">tree,form</field>
+              <field name="view_mode">tree,form,activity</field>
               <field name="context">{}</field>
               <field name="help" type="html">
                   <p class="o_view_nocontent_smiling_face">
                       Create your first patient!
                   </p>
               </field>
-          </record>
+         </record>
 
           <menuitem id="menu_appointment"
                     name="Appointments"

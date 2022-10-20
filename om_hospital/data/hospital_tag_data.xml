@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record  id="hospital_tag_kid" model="hospital.tag">
+        <field name="name">Kid</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

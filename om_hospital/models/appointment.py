@@ -16,12 +16,14 @@ class HospitalAppointment(models.Model):
     priority = fields.Selection([('0', 'low'), ('1', 'normal'), ('2', 'high'), ('3', 'very high')], string="Priority")
     state = fields.Selection([('draft', 'Draft'), ('in_consultation', 'Consultation'), ('done', 'Done'),
                               ('cancel', 'Cancel')], default='draft', required=1)
+    pharmacy_ids = fields.One2many('hospital.pharmacy.line', 'appointment_id', string="Pharmacy")
+    hide_sale_price = fields.Boolean(string="Hide Sale Price", default=False)
 
     @api.onchange('patient_id')
     def _onchange_patient_id(self):
         self.ref = self.patient_id.ref
 
-    #rainbow effect
+    # rainbow effect
     def test_btn(self):
         print("Class btn")
         return {
@@ -32,3 +34,24 @@ class HospitalAppointment(models.Model):
             }
         }
 
+    def action_in_consultation(self):
+        for rec in self:
+            rec.state = 'in_consultation'
+
+    def action_done(self):
+        for rec in self:
+            rec.state = 'done'
+
+    def action_cancel(self):
+        action = self.env.ref('om_hospital.action_cancel_appointment').read()[0]
+        return action
+
+
+class HospitalPharmacy(models.Model):
+    _name = 'hospital.pharmacy.line'
+    _description = 'Hospital Pharmacy'
+
+    product_id = fields.Many2one('product.product', string="Product", required=1)
+    price_unit = fields.Float(related='product_id.list_price', string="Sale Price", readonly=False)
+    qty = fields.Integer(string="Quantity", default=1)
+    appointment_id = fields.Many2one('hospital.appointment', string="Appointment")

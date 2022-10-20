@@ -13,8 +13,19 @@ class HospitalManagement(models.Model):
     date_of_birth = fields.Date(string="Birth Date")
     age = fields.Integer(string="Age", tracking=True, compute='_compute_age')
     gender = fields.Selection([('female', 'Female'), ('male', 'Male')], string='Gender', tracking=True)
-    active = fields.Boolean(string='Active', default=True)
+    active = fields.Boolean(string='Active', default=True, invisible=1)
+    image = fields.Image(string="Image")
+    tag_ids = fields.Many2many('hospital.tag', string="Patient Tag")
 
+    @api.model
+    def create(self, vals_list):
+        print("Odoo....", vals_list)
+        vals_list['ref'] = 'HERE001'
+        return super(HospitalManagement, self).create(vals_list)
+
+    def name_get(self):
+        print("name get method")
+        
     @api.depends('date_of_birth')
     def _compute_age(self):
         for rec in self:
