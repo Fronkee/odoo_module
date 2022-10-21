@@ -11,6 +11,9 @@
                             <field name="appointment_id"/>
                             <field name="reason"/>
                         </group>
+                        <group>
+                            <field name="cancel_date"/>
+                        </group>
                     <footer>
                         <button name="action_cancel_appointment" string="Cancel Appointment" type="object" class="btn-primary" data-hotkey="q"/>
                         <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
