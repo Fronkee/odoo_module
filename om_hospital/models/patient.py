@@ -1,5 +1,5 @@
 from datetime import date
-from odoo import models, api, fields
+from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError
 
 
@@ -16,6 +16,12 @@ class HospitalManagement(models.Model):
     active = fields.Boolean(string='Active', default=True, invisible=1)
     image = fields.Image(string="Image")
     tag_ids = fields.Many2many('hospital.tag', string="Patient Tag")
+
+    @api.constrains('date_of_birth')
+    def _check_date_of_birth(self):
+        for rec in self:
+            if rec.date_of_birth and rec.date_of_birth > fields.Date.today():
+                raise ValidationError(_('Bron Date must be last than Current Date'))
 
     # create sequence with sequence_data.xml
     @api.model
@@ -47,5 +53,5 @@ class HospitalManagement(models.Model):
         #     name = f'{rec.ref}  {rec.name}'
         #     patient_list.append((rec.id, name))
         # return patient_list
-    # single line method
+        # single line method
         return [(rec.id, "%s:%s" % (rec.ref, rec.name)) for rec in self]

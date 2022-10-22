@@ -21,6 +21,6 @@
         'views/female_patient_view.xml',
         'views/appointment_view.xml',
         'views/hospital_tag_view.xml',
-
+        'views/odoo_playground_view.xml',
     ],
 }

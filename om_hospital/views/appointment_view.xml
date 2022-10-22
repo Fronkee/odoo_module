@@ -57,8 +57,10 @@
                       <header>
                           <button name="action_in_consultation" string="Consultation" type="object" data-hotkey="o"/>
                           <button name="action_done" string="Done" type="object" states="in_consultation"/>
-                          <button name="action_cancel" string="Cancel" type="object" data-hotkey="l"/>
-<!--                          <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" type="action"/>-->
+                          <button name="action_cancel" string="Cancel" type="object" data-hotkey="l"
+                                  context="{'hide_appointment':1}"/>
+<!--                          <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" type="action"-->
+<!--                                  context="{'default_appointment_id':active_id}"/>-->
                           <field name="state" widget="statusbar" nolable="1"
                                  statusbar_visible="draft,in_consultation,done"/>
                           <!-- options="{'clickable':'1'}"-->

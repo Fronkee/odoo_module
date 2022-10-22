@@ -1,4 +1,5 @@
-from odoo import models, api, fields
+from odoo import models, api, fields, _
+from odoo.exceptions import ValidationError
 
 
 class HospitalAppointment(models.Model):
@@ -22,6 +23,12 @@ class HospitalAppointment(models.Model):
     @api.onchange('patient_id')
     def _onchange_patient_id(self):
         self.ref = self.patient_id.ref
+
+    def unlink(self):
+        print("unlink method")
+        if self.state == 'done':
+            raise ValidationError(_('Done state cannot Delete!'))
+        return super(HospitalAppointment, self).unlink()
 
     # rainbow effect
     def test_btn(self):
