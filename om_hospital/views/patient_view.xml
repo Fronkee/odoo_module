@@ -5,11 +5,13 @@
              <field name="name">hospital.patient.tree</field>
              <field name="model">hospital.patient</field>
              <field name="arch" type="xml">
-                 <tree>
-                     <field name="name" string="Patient Name"/>
-                     <field name="ref"/>
-                     <field name="age" widget="integer"/>
-                     <field name="gender"/>
+                 <tree export_xlsx="0">
+                    <field name="id"/>
+                    <field name="name" string="Patient Name"/>
+                    <field name="appointment_count" sum="Total Appointment"/>
+                    <field name="ref"/>
+                    <field name="age" widget="integer"  avg="Avg age"/>
+                    <field name="gender"/>
                  </tree>
              </field>
          </record>
@@ -41,24 +43,55 @@
               <field name="model">hospital.patient</field>
               <field name="arch" type="xml">
                   <form string="Patient Form">
-                      <sheet>
-                          <field name="image" widget="image" class="oe_avatar"/>
-                          <group>
-                              <group>
-                                  <field name="name" default_focus="1"/>
-                                  <field name="date_of_birth"/>
-                                  <field name="age"/>
-                                  <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
-                              </group>
-                              <group>
-                                  <field name="ref"/>
-                                  <field name="gender" invisible="context.get('hide_gender')"/>
-                                  <field name="active" attrs="{'invisible':0}"/>
-                              </group>
-                          </group>
-                      </sheet>
+                    <div class="alert alert-info text-center o_form_header mb-5" role="alert"
+                         attrs="{'invisible':[('is_birthday', '=', False)]}">
+                        <a class="close" data-dismiss="alert" href="#">x</a>
+                        <div>
+                            <strong>Today is Birthday!</strong>
+                        </div>
+                        <div>Wish <field name="name" readonly="1"/></div>
+                    </div>
+                    <sheet>
+                        <field name="image" widget="image" class="oe_avatar" width="200px"/>
+                        <div class="oe_title">
+                        <h2>
+                            <label for="name" string="Name" class="oe_edit_only"/>
+                            <field name="name"/>
+                        </h2>
+                        </div>
+                        <group>
+                            <group>
+                                <!-- <field name="name" default_focus="1"/> -->
+                                <field name="appointment_count"/>
+                                <field name="date_of_birth"/>
+                                <field name="age"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                                <!-- many2many_checkboxes -->
+                            </group>
+                            <group>
+                                <field name="ref"/>
+                                <field name="gender" invisible="context.get('hide_gender')" widget="radio"/>
+                                <field name="active" attrs="{'invisible':0}"/>
+                                <field name="is_birthday"/>
+                            </group>
+                        </group>
+                        <group string="Other Information">
+                        <group>
+                            <field name="parent" attrs="{'invisible':[('age', '&lt;' ,18)]}"/>
+                            <field name="marital_status" />
+                            <field name="partner_name" attrs="{'invisible':[('marital_status', '=' , 'single')],
+                                                                'required':[('marital_status', '=', 'married')]}"/>
+                            <!--  attrs="{'readonly':[('marital_status', '=' , 'single')]}"-->
+                        </group>
+                        <group>
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="website" widget="url"/>
+                        </group>
+                    </group> 
+                    </sheet>
                       <!--  chatter-->
-                      <div class="oe_chatter">
+                    <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                         <field name="activity_ids"/>
                         <field name="message_ids"/>

@@ -8,7 +8,7 @@ class HospitalAppointment(models.Model):
     _description = 'Hospital Appointment  '
     _rec_name = 'ref'
 
-    patient_id = fields.Many2one('hospital.patient', strring="Patient")
+    patient_id = fields.Many2one('hospital.patient', strring="Patient", ondelete="cascade")  # restrict
     gender = fields.Selection(related='patient_id.gender', readonly=False)
     appointment_time = fields.Datetime(string='Appointment Time', default=fields.Datetime.now)
     booking_date = fields.Date(string='Booking Date', default=fields.Date.context_today)
@@ -19,6 +19,12 @@ class HospitalAppointment(models.Model):
                               ('cancel', 'Cancel')], default='draft', required=1)
     pharmacy_ids = fields.One2many('hospital.pharmacy.line', 'appointment_id', string="Pharmacy")
     hide_sale_price = fields.Boolean(string="Hide Sale Price", default=False)
+    operation_id = fields.Many2one('hospital.operation', string="Operation")
+    progress = fields.Integer(string="Progress", compute="_compute_progress")
+    duration = fields.Float(string="Duration")
+    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency', string="Currency", related="company_id.currency_id")
+
 
     @api.onchange('patient_id')
     def _onchange_patient_id(self):
@@ -26,8 +32,9 @@ class HospitalAppointment(models.Model):
 
     def unlink(self):
         print("unlink method")
-        if self.state == 'done':
-            raise ValidationError(_('Done state cannot Delete!'))
+        for rec in self:
+            if rec.state == 'done':
+                raise ValidationError(_('Done state cannot Delete!'))
         return super(HospitalAppointment, self).unlink()
 
     # rainbow effect
@@ -43,15 +50,33 @@ class HospitalAppointment(models.Model):
 
     def action_in_consultation(self):
         for rec in self:
-            rec.state = 'in_consultation'
+            if rec.state == 'draft':
+                rec.state = 'in_consultation'
 
     def action_done(self):
         for rec in self:
             rec.state = 'done'
 
+    def action_in_draft(self):
+        for rec in self:
+            rec.state = 'draft'
+
     def action_cancel(self):
         action = self.env.ref('om_hospital.action_cancel_appointment').read()[0]
         return action
+
+    @api.depends('state')
+    def _compute_progress(self):
+        for rec in self:
+            if rec.state == 'draft':
+                progress = 50
+            elif rec.state == 'done':
+                progress = 100
+            elif rec.state == 'in_consultation':
+                progress = 40
+            else:
+                progress = 0
+            rec.progress = progress
 
 
 class HospitalPharmacy(models.Model):
@@ -62,3 +87,10 @@ class HospitalPharmacy(models.Model):
     price_unit = fields.Float(related='product_id.list_price', string="Sale Price", readonly=False)
     qty = fields.Integer(string="Quantity", default=1)
     appointment_id = fields.Many2one('hospital.appointment', string="Appointment")
+    currency_id = fields.Many2one('res.currency', string="Currency", related="appointment_id.currency_id")
+    price_subtotal = fields.Monetary(string="Subtotal", compute="_compute_subtotal")
+
+    @api.depends('price_unit', 'qty')
+    def _compute_subtotal(self):
+        for rec in self:
+            rec.price_subtotal = rec.price_unit * rec.qty

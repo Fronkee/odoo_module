@@ -22,5 +22,7 @@
         'views/appointment_view.xml',
         'views/hospital_tag_view.xml',
         'views/odoo_playground_view.xml',
+        'views/res_config_settings_views.xml',        
+        'views/operation_view.xml',
     ],
 }

@@ -16,6 +16,7 @@ class HospitalTag(models.Model):
     color_2 = fields.Char(string="Color 2")
     sequence = fields.Integer(string="Sequence")
 
+    # duplicate record for unique value
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
         if default is None:
@@ -26,6 +27,6 @@ class HospitalTag(models.Model):
 
     _sql_constraints = [
         ('unique_tag_name', 'unique (name)', 'Name must be unique.'),
-        ('unique_sequence', 'check (sequence > 0)', 'Sequence must be greater than 0')
+        ('check_sequence', 'check (sequence > 0)', 'Sequence must be greater than 0')
     ]
-    # does not work _sql_constraints for unique_name
+    # work _sql_constraints for unique_name, condition of sequence
