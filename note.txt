@@ -2,6 +2,18 @@ postgresql pass =123
 
  #scaffold
  C:\Users\KIS\Desktop\odoo-15.0_com\venv\Scripts\python.exe ./odoo-bin scaffold om_odoo_inheritence custom_addons
+
+#shell
+	 python odoo-bin shell
+	 python odoo-bin shell -d db_name {or}
+	 python odoo-bin shell -d db_name -c [absolute path or --]odoo.conf
+		-- self, self.name, self.login, self.env['model_name'].search([]) , , self.env['model_name'].search_count([])
+		-- self.env.cr.commit()
+
+
+
+
+
  
 #
  return super(HospitalManagement, self).create(vals_list)
@@ -11,3 +23,35 @@ action = self.env.ref('om_hospital.action_cancel_appointment').read()[0]
 
 #
 super(SaleOrder, self).action_confirm()
+
+
+
+#ORM
+
+ self.env['model_name'].browse(id).name
+ self.env['model_name'].browse(id,id).mapped('name')
+ self.env['model_name'].browse(id).exists() 
+ 
+ #update data
+    self.env['model_name'].browse(id).write({'key' : 'value'})
+ 
+ # unlink data
+    self.env['model_name'].browse(id).unlink()
+
+ # search
+    self.env['model_name'].search([ ('gender', '=', 'male') ])
+    self.env['model_name'].search([ ('gender', '=', 'male') ]).name
+    self.env['model_name'].search([ '|', ('gender', '=', 'male'), ('id', '=', id) ])
+    self.env['model_name'].search([], limlit = 1, order="id desc")
+    self.env['model_name'].search_count([])
+    self.env['model_name'].search_count(['gender', '=', 'male']) 
+    self.env['model_name'].search_count(['gender', '=', 'male'], count=True) 
+
+# metadata
+       self.env['model_name'].browse(id).get_metadata() 
+       self.env['model_name'].browse(id).get_metadata()[0].get('id')  
+       self.env['model_name'].fields.get()
+       self.env['model_name'].fields.get(['name','gender'])
+	 self.env['....'].with_context(active_test=False).search_count([])
+
+   

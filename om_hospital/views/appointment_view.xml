@@ -30,6 +30,8 @@
                     <field name="appointment_time" optional="show"/>
                     <field name="booking_date" optional="show"/>
                     <field name="activity_ids" widget="list_activity" optional="show"/>
+                    <field name="currency_id" invisible="1"/>
+<!--                    <field name="amount" decoration-bf="1"/>-->
                     <field name="progress" widget="progressbar"/>
                     <field name="state" widget="badge" decoration-success="state =='done'"
                         decoration-info="state == 'draft'" decoration-danger=" state == 'in_consultation' " optional="show"/>
@@ -163,6 +165,8 @@
                                             <field name="qty"/>
                                             <field name="currency_id" invisible="1"/>
                                             <field name="price_subtotal"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="amount"/>
                                         </tree>
                                         <form>
                                             <group>
@@ -185,6 +189,7 @@
                     </div>
                 </form>
             </field>
+
         </record>
         <!--        form-view-end -->
 

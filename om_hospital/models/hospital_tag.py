@@ -10,8 +10,8 @@ class HospitalTag(models.Model):
         print('Context Tag -----------------------------', fields_list)
         return res
 
-    name = fields.Char(string="Name", required=True)
-    active = fields.Boolean(string="Active",default=True, copy=False)
+    name = fields.Char(string="Name", required=True, trim=False)
+    active = fields.Boolean(string="Active", default=True, copy=False)
     color = fields.Integer(string="Color")
     color_2 = fields.Char(string="Color 2")
     sequence = fields.Integer(string="Sequence")
