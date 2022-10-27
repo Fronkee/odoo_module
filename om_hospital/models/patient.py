@@ -11,7 +11,7 @@ class HospitalManagement(models.Model):
     _order = 'id desc'
 
     name = fields.Char(string="Name", tracking=True)
-    ref = fields.Char(string="Reference")
+    ref = fields.Char(string="Reference", readonly=True)
     date_of_birth = fields.Date(string="Birth Date")
     age = fields.Integer(string="Age", compute="_compute_age", inverse="_inverse_compute_age", search="_search_age",
                          tracking=True)
@@ -24,7 +24,8 @@ class HospitalManagement(models.Model):
     parent = fields.Char(string="Parent")
     marital_status = fields.Selection([('married', 'Married'), ('single', 'Single')], string="Marital Status")
     partner_name = fields.Char(string="Partner Name")
-    is_birthday = fields.Boolean(string="Brithday", compute="_compute_is_birthday")
+    is_birthday = fields.Boolean(string="Birthday", compute="_compute_is_birthday")
+    hp_birth = fields.Char(string="Birthday", default="Happy Birthday")
     phone = fields.Char(string="Phone")
     email = fields.Char(string="Email")
     website = fields.Char(string="Website")
@@ -32,6 +33,7 @@ class HospitalManagement(models.Model):
     _sql_constraints = [
         ('unique_ref', 'unique (ref)', 'Reference Number Must Be Unique!')
     ]
+
     @api.depends('appointment_ids')
     def _compute_appointment_count(self):
         for rec in self:
@@ -102,8 +104,9 @@ class HospitalManagement(models.Model):
                 if today.day == rec.date_of_birth.day and today.month == rec.date_of_birth.month:
                     print(f'month is {rec.date_of_birth.month}')
                     is_birth = True
-                    print(is_birth)
             rec.is_birthday = is_birth
+            rec.hp_birth = "Happy Birthday"
+
 
     def name_get(self):
         # patient_list = []

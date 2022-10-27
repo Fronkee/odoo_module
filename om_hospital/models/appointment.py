@@ -85,6 +85,38 @@ class HospitalAppointment(models.Model):
                 progress = 0
             rec.progress = progress
 
+    def action_notification(self):
+        # msg = "Button Click Successful"
+        # return{
+        #     'type' : 'ir.actions.client',
+        #     'tag' : 'display_notification',
+        #     'params':{
+        #         'message' : msg,
+        #         'type' : 'warning', #type is color of bootstrap warn,danger,
+        #         'sticky' : True,
+        #     }
+        # }      
+        action = self.env.ref('om_hospital.action_hospital_patient')
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Click to open the patient record'),
+                'message': '%s',
+                'links': [{
+                    'label': self.patient_id.name,
+                    'url': f'#action={action.id}&id={self.patient_id.id}&model=hospital.patient'
+                }],
+                'sticky': True,
+                'next': {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'hospital.patient',
+                    'res_id': self.patient_id.id,
+                    'views': [(False, 'form')]
+                }
+            }
+        }
+
 
 class HospitalPharmacy(models.Model):
     _name = 'hospital.pharmacy.line'
@@ -95,18 +127,17 @@ class HospitalPharmacy(models.Model):
     qty = fields.Integer(string="Quantity", default=1)
     appointment_id = fields.Many2one('hospital.appointment', string="Appointment")
     currency_id = fields.Many2one('res.currency', string="Currency", related="appointment_id.currency_id")
-    price_subtotal = fields.Monetary(string="Subtotal", compute="_compute_subtotal", store = True)
-    amount = fields.Monetary(string="Amount", onchange="_onchange_amount")
+    price_subtotal = fields.Monetary(string="Subtotal", compute="_compute_amount", store=True)
+    amount = fields.Monetary(string="Amount")
 
     @api.depends('price_unit', 'qty')
     def _compute_subtotal(self):
         for rec in self:
             rec.price_subtotal = rec.price_unit * rec.qty
 
-    @api.onchange('price_subtotal')
-    def _onchange_amount(self):
-        self.env.cr.execute(""" SELECT price_subtotal FROM hospital_pharmacy_line WHERE appointment_id=24""")
-        results = self.env.cr.dictfetchall()
-        print(results)
-        for res in results:
-            print(res['price_subtotal'])
+    # @api.depends('price_subtotal')
+    # def _compute_amount(self):
+    #     for rec in self:
+    #         self.env.cr.execute(""" SELECT price_subtotal FROM hospital_pharmacy_line WHERE appointment_id=24""")
+    #         results = self.env.cr.dictfetchall()
+    #         print(results)

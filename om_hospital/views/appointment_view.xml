@@ -139,6 +139,7 @@
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="booking_date"/>
+                            <button name="action_notification" string="MSG" type="object" class="oe_highlight"/>
                             </group>
                         </group>
                         <notebook>
