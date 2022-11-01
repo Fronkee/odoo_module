@@ -20,8 +20,8 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="doctor_id"/> 
+                             <field name="name"/>
+                             <field name="doctor_id"/>
                              <field name="reference_record"/> 
                         </group>
                     </group>

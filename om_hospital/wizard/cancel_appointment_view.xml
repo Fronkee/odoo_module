@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
     <record id="view_cancel_appointment_form" model="ir.ui.view">
         <field name="name">cancel.appointment.wizard.form</field>
         <field name="model">cancel.appointment.wizard</field>
         <field name="arch" type="xml">
             <form>
+                <group>
                     <group>
-                        <group>
-                            <field name="appointment_id"  domain="['|', ('state', '=', 'draft'), ('priority', 'in', ('0', '1', False))]"/>
-<!--                            invisible="context.get('hide_appointment')"-->
-                            <field name="reason"/>
-                        </group>
-                        <group>
-                            <field name="cancel_date"/>
-                        </group>
+                        <field name="appointment_id"  domain="['|', ('state', '=', 'draft'), ('priority', 'in', ('0', '1', False))]"/>
+                        <!-- invisible="context.get('hide_appointment')"-->
+                        <field name="reason"/>
+                    </group>
+                    <group>
+                        <field name="cancel_date"/>
+                    </group>
                     <footer>
                         <button name="action_cancel_appointment" string="Cancel Appointment" type="object" class="btn-primary" data-hotkey="q"/>
                         <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
                     </footer>
-                    </group>
+                </group>
             </form>
         </field>
     </record>

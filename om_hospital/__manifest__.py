@@ -15,6 +15,7 @@
         'data/hospital_tag_data.xml',
         'data/hospital.tag.csv',
         'data/sequence_data.xml',
+        'data/mail_template_data.xml',
         'wizard/cancel_appointment_view.xml',
         'views/menu.xml',
         'views/patient_view.xml',
@@ -24,5 +25,7 @@
         'views/odoo_playground_view.xml',
         'views/res_config_settings_views.xml',        
         'views/operation_view.xml',
+        'report/report.xml',
+        'report/patient_card.xml'
     ],
 }

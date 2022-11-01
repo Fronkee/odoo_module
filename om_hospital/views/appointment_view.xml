@@ -22,7 +22,7 @@
             <field name="arch" type="xml">
                 <tree sample="1" multi_edit="1">
                     <header>
-                    <button name="action_in_consultation" string="Consultation" type="object"/>   
+                    <button name="action_in_consultation" string="Consultation" type="object"/>
                     </header>
                     <field name="patient_id" optional="show" widget="many2one_avatar"/>
                     <field name="ref" optional="show"/>
@@ -36,9 +36,9 @@
                     <field name="state" widget="badge" decoration-success="state =='done'"
                         decoration-info="state == 'draft'" decoration-danger=" state == 'in_consultation' " optional="show"/>
                     <!--  decoration-danger=" state in ('draft' , 'done') "          -->
-                    <button name="action_done"  class="fa fa-check btn-success" type="object" 
+                    <button name="action_done"  class="fa fa-check btn-success" type="object"
                             attrs="{'invisible':[('state', '!=', 'in_consultation')]}"/>
-                    <button name="action_cancel"  class="fa fa-times btn-danger" type="object" 
+                    <button name="action_cancel"  class="fa fa-times btn-danger" type="object"
                             attrs="{'invisible':[('state', 'not in', ('draft','in_consultation'))]}"/>
                     <groupby name="patient_id">
                     <button name="action_test" string="click me" type="object" class="oe_highlight"/>
@@ -46,17 +46,17 @@
                     </groupby>
                 </tree>
             </field>
-       <!--   tree-view-end     -->
-
         </record>
-            <record id="view_hospital_appointment_calendar" model="ir.ui.view">
+        <!--   tree-view-end     -->
+
+        <record id="view_hospital_appointment_calendar" model="ir.ui.view">
             <field name="name">hospital.appointment.calendar</field>
             <field name="model">hospital.appointment</field>
             <field name="arch" type="xml">
                 <calendar string="Appointment" date_start="booking_date" mode="month"  color="state" quick_add="False"
                           hide_time="true" form_view_id="%(om_hospital.view_hospital_appointment_form)d"
                           event_open_popup="True" event_limit="5">
-<!--  date_delay=""                  -->
+                <!--  date_delay=""-->
                     <field name="patient_id" filters="1" avatar_field="image"/>
                     <field name="state" invisible="1" filters="1"/>
                 </calendar>
@@ -72,7 +72,9 @@
                     <field name="patient_id"/>
                     <templates>
                         <div t-name="activity-box">
-                            <img t-att-src="activity_image('hospital.appointment', 'avatar_128', record.patient_id.raw_value)" role="img" t-att-title="record.patient_id.value" t-att-alt="record.patient_id.value"/>
+                            <img t-att-src="activity_image('hospital.appointment', 'avatar_128',
+                                 record.patient_id.raw_value)" role="img" t-att-title="record.patient_id.value"
+                                 t-att-alt="record.patient_id.value"/>
                             <div>
                                 <field name="patient_id" display="full"/>
                             </div>
@@ -107,8 +109,10 @@
                         <button name="action_done" string="Done" type="object" states="in_consultation"/>
                         <button name="action_cancel" string="Cancel" type="object" data-hotkey="l"
                                 context="{'hide_appointment':1}"/>
-<!--                          <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" type="action"-->
-<!--                                  context="{'default_appointment_id':active_id}"/>-->
+                        <button name="action_send_mail" string="Send Mail" type="object" class="oe_highlight"
+                                data-hotkey="e"/>
+                        <!-- <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" type="action"-->
+                        <!-- context="{'default_appointment_id':active_id}"/>-->
                         <field name="state" widget="statusbar" nolable="1"
                                 statusbar_visible="draft,in_consultation,done"/>
                         <!-- options="{'clickable':'1'}"-->
@@ -121,25 +125,26 @@
                         </div>
                         <group>
                             <group>
-                            <field name="patient_id"
-                                    widget="res_partner_many2one"
-                                    context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"
-                                    options="{&quot;always_reload&quot;: True}"/>
-                            <field name="appointment_time"/>
-                            <field name="operation_id"/>
-                            <button name="test_btn" string="Test" type="object" class="oe_highlight"/>
-                            <button name="%(om_hospital.action_hospital_patient)d" string="Action Button"
-                                    help="If u clicking this button,you will be redirect to patient record"
-                                    confirm="R u sure open patient view?" type="action" class="oe_highlight"/>
+                                <field name="patient_id"
+                                        widget="res_partner_many2one"
+                                        context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"
+                                        options="{&quot;always_reload&quot;: True}"/>
+                                <field name="appointment_time"/>
+                                <field name="operation_id"/>
+                                <field name="age"/>
+                                <button name="test_btn" string="Test" type="object" class="oe_highlight"/>
+                                <button name="%(om_hospital.action_hospital_patient)d" string="Action Button"
+                                        help="If u clicking this button,you will be redirect to patient record"
+                                        confirm="R u sure open patient view?" type="action" class="oe_highlight"/>
                             </group>
                             <group>
-                            <field name="ref" readonly="1" force_save="1"/>
-                            <field name="hide_sale_price" groups="base.group_no_one"/>
-                            <field name="gender"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
-                            <field name="currency_id" groups="base.group_multi_currency"/>
-                            <field name="booking_date"/>
-                            <button name="action_notification" string="MSG" type="object" class="oe_highlight"/>
+                                <field name="ref" readonly="1" force_save="1"/>
+                                <field name="hide_sale_price" groups="base.group_no_one"/>
+                                <field name="gender"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="currency_id" groups="base.group_multi_currency"/>
+                                <field name="booking_date"/>
+                                <button name="action_notification" string="MSG" type="object" class="oe_highlight"/>
                             </group>
                         </group>
                         <notebook>
@@ -149,7 +154,7 @@
                                            options="{'style':'width:100px, height:100px', 'max_field':'maximum_rate'}"/>
 <!--                                <field name="progress" widget="percentpie"/>-->
                                 </group>
-                            </page> 
+                            </page>
                             <page string="Prescription" name="prescription">
                                 <group>
                                     <field name="prescription" placeholder="Enter prescription" nolabel="1"
@@ -160,6 +165,7 @@
                                 <group>
                                     <field name="pharmacy_ids"  nolabel="1" >
                                         <tree editable="bottom">
+                                            <field name="sl_no" readonly="1"/>
                                             <field name="product_id"/>
                                             <field name="price_unit" widget="monetary"
                                                     attrs="{'column_invisible':[('parent.hide_sale_price', '=', True)]}"/>
@@ -167,7 +173,6 @@
                                             <field name="currency_id" invisible="1"/>
                                             <field name="price_subtotal"/>
                                             <field name="currency_id" invisible="1"/>
-                                            <field name="amount"/>
                                         </tree>
                                         <form>
                                             <group>
@@ -184,13 +189,12 @@
                     </sheet>
                       <!--  chatter-->
                     <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
                     </div>
                 </form>
             </field>
-
         </record>
         <!--        form-view-end -->
 

@@ -54,4 +54,51 @@ super(SaleOrder, self).action_confirm()
        self.env['model_name'].fields.get(['name','gender'])
 	 self.env['....'].with_context(active_test=False).search_count([])
 
+
+# search 
+def _search_standard_price(self, operator, value):
+    products = self.env['product.product'].search([('standard_price', operator, value)], limit=None)
+    return [('id', 'in', products.mapped('product_tmpl_id').ids)]
    
+
+
+
+########################
+
+#       class A1(Model):                      Model
+#           _name = 'a'                       / | \
+#                                            A3 A2 A1   <- definition classes
+#       class A2(Model):                      \ | /
+#           _inherit = 'a'                      a       <- registry class: registry['a']
+#                                               |
+#       class A3(Model):                     records    <- model instances, like env['a']
+
+
+
+#######################
+
+#       class A1(Model):
+#           _name = 'a'                       Model
+#                                            / / \ \
+#       class B1(Model):                    / /   \ \
+#           _name = 'b'                    / A2   A1 \
+#                                         B2  \   /  B1
+#       class B2(Model):                   \   \ /   /
+#           _name = 'b'                     \   a   /
+#           _inherit = ['a', 'b']            \  |  /
+#                                             \ | /
+#       class A2(Model):                        b
+#           _inherit = 'a'
+
+
+########################
+
+#       class A1(Model):                      Model
+#           _name = 'a'                        / \        
+#           foo = ...                         /   \      
+#           bar = ...                       A2     A1
+#                                            bar    foo, bar
+#       class A2(Model):                      \   /
+#           _inherit = 'a'                     \ /
+#           bar = ...                           a
+#                                                bar

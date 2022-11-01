@@ -48,8 +48,8 @@ class HospitalManagement(models.Model):
     # create sequence with sequence_data.xml
     @api.model
     def create(self, vals_list):
-        print("odooooo-------------------------------------------------------", vals_list)
-        print('...................', self.env['ir.sequence'])
+        # print("odoo-------------------------------------------------------", vals_list)
+        # print('...................', self.env['ir.sequence'])
         vals_list['ref'] = self.env['ir.sequence'].next_by_code('hospital.patient')
         return super(HospitalManagement, self).create(vals_list)
 
@@ -64,10 +64,10 @@ class HospitalManagement(models.Model):
     def _compute_age(self):
         for rec in self:
             today = date.today()
-            print("today is --------------------", today)
+            # print("today is --------------------", today)
             if rec.date_of_birth:
                 rec.age = today.year - rec.date_of_birth.year
-                print("Age is ----------------------", rec.age)
+                # print("Age is ----------------------", rec.age)
             else:
                 rec.age = 1
 
@@ -75,9 +75,8 @@ class HospitalManagement(models.Model):
     def _inverse_compute_age(self):
         today = date.today()
         for rec in self:
-            print("Reverse age----------------------------------------------")
+            # print("Reverse age----------------------------------------------")
             rec.date_of_birth = today - relativedelta.relativedelta(years=rec.age)
-            # does not work inverse function for age
 
     # compute age cannot search controlpanel view, use _search function can find
     def _search_age(self, operator, value):
@@ -106,7 +105,6 @@ class HospitalManagement(models.Model):
                     is_birth = True
             rec.is_birthday = is_birth
             rec.hp_birth = "Happy Birthday"
-
 
     def name_get(self):
         # patient_list = []

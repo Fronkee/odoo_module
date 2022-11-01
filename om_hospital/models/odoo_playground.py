@@ -1,5 +1,4 @@
 from odoo import api, fields, models
-from odoo.tools.safe_eval import safe_eval
 
 
 class OdooPlayGround(models.Model):
@@ -26,10 +25,10 @@ class OdooPlayGround(models.Model):
             if self.model_id:
                 model = self.env[self.model_id.model]
                 self.result = model
-                print(model)
             else:
                 model = self
                 print(model)
                 self.result = model
         except Exception as e:
+            print("coming from exception")
             self.result = str(e)
