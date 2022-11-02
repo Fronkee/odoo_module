@@ -62,6 +62,14 @@ def _search_standard_price(self, operator, value):
    
 
 
+# query
+        query = """select id,patient_id from hospital_appointment where id=%s""" % self.appointment_id.id
+        # self.env.cr.execute(query)
+        self._cr.execute(query)
+        patients = self.env.cr.dictfetchall()
+        print('Patients -------------->', patients)
+
+
 
 ########################
 

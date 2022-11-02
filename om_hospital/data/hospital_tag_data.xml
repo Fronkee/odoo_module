@@ -2,6 +2,7 @@
 <odoo>
     <record  id="hospital_tag_kid" model="hospital.tag">
         <field name="name">Kid</field>
-        <field name="active" eval="False"/>
+        <field name="sequence">4</field>
+        <field name="active" eval="True"/>
     </record>
 </odoo>

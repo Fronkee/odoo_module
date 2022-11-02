@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError
 from dateutil import relativedelta
@@ -48,8 +48,6 @@ class HospitalManagement(models.Model):
     # create sequence with sequence_data.xml
     @api.model
     def create(self, vals_list):
-        # print("odoo-------------------------------------------------------", vals_list)
-        # print('...................', self.env['ir.sequence'])
         vals_list['ref'] = self.env['ir.sequence'].next_by_code('hospital.patient')
         return super(HospitalManagement, self).create(vals_list)
 
@@ -64,21 +62,24 @@ class HospitalManagement(models.Model):
     def _compute_age(self):
         for rec in self:
             today = date.today()
-            # print("today is --------------------", today)
             if rec.date_of_birth:
                 rec.age = today.year - rec.date_of_birth.year
-                # print("Age is ----------------------", rec.age)
             else:
-                rec.age = 1
+                rec.age = 0
 
     @api.depends('age')
     def _inverse_compute_age(self):
-        today = date.today()
         for rec in self:
-            # print("Reverse age----------------------------------------------")
-            rec.date_of_birth = today - relativedelta.relativedelta(years=rec.age)
+            today = date.today()
+            if rec.date_of_birth:
+                data = today - relativedelta.relativedelta(years=rec.age)
+                rec.date_of_birth = datetime.strptime(f'{rec.date_of_birth.month}/{rec.date_of_birth.day}/{data.year}',
+                                                      "%m/%d/%Y").date()
+            else:
+                print("Not have Date")
+                rec.date_of_birth = today - relativedelta.relativedelta(years=rec.age)
 
-    # compute age cannot search controlpanel view, use _search function can find
+    # compute age cannot search control panel view, use _search function can find
     def _search_age(self, operator, value):
         date_of_birth = date.today() - relativedelta.relativedelta(years=value)
         start_of_year = date_of_birth.replace(day=1, month=1)
@@ -101,7 +102,7 @@ class HospitalManagement(models.Model):
             if rec.date_of_birth:
                 today = date.today()
                 if today.day == rec.date_of_birth.day and today.month == rec.date_of_birth.month:
-                    print(f'month is {rec.date_of_birth.month}')
+                    # print(f'month is {rec.date_of_birth.month}')
                     is_birth = True
             rec.is_birthday = is_birth
             rec.hp_birth = "Happy Birthday"
