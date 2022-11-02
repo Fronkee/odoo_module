@@ -152,7 +152,6 @@
                                 <group>
                                     <field name="progress" nolabel="1" widget="percentpie"
                                            options="{'style':'width:100px, height:100px', 'max_field':'maximum_rate'}"/>
-<!--                                <field name="progress" widget="percentpie"/>-->
                                 </group>
                             </page>
                             <page string="Prescription" name="prescription">

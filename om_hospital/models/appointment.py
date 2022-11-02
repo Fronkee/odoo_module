@@ -151,13 +151,15 @@ class HospitalAppointment(models.Model):
             }
         }
 
-    # Share Email
+    # Send Email
     def action_send_mail(self):
         template = self.env.ref('om_hospital.appointment_mail_template')
         for rec in self:
             if rec.patient_id.email:
                 email_values = {'subject': 'Test OM'}
                 template.send_mail(rec.id, force_send=True, email_values=email_values)
+            else:
+                raise ValidationError(_(" Email does not exit! "))
 
 
 class HospitalPharmacy(models.Model):
