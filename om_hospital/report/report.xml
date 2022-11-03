@@ -4,8 +4,8 @@
         <field name="name">Patient Card</field>
         <field name="model">hospital.patient</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">om_hospital.report_patient_card</field>
-        <field name="report_file">om_hospital.report_patient_card</field>
+        <field name="report_name">om_hospital.card_report_patient</field>
+        <field name="report_file">om_hospital.card_report_patient</field>
         <field name="binding_model_id" ref="model_hospital_patient"/>
         <field name="binding_type">report</field>
     </record>

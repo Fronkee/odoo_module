@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <template id="report_patient_card">
+    <template id="card_report_patient">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
@@ -52,73 +52,74 @@
                                                                 <strong>Reference</strong>
                                                             </span>
                                                         </td>
-                                                        <td><span>:</span></td>
+                                                        <td>
+                                                            <span>:</span>
+                                                        </td>
                                                         <td>
                                                             <span t-field="o.ref"/>
                                                         </td>
                                                     </tr>
                                                 </table>
-                                            <!--for QR Code -->
+                                                <!--for QR Code -->
+<!--                                                <div>-->
+<!--                                                    <img t-att-src="'/report/barcode/QR/' + o.name" style="width:150px;-->
+<!--                                                                                            height:75px" alt="Barcode"/>-->
+<!--                                                </div>-->
+
+                                                <!--for  Code128 -->
                                                 <div>
-                                                    <img t-att-src="'/report/barcode/QR/' + o.name" style="width:150px;
-                                                                                            height:75px" alt="Barcode"/>
+                                                    <img t-att-src="'/report/barcode/Code128/'+ o.name " style="width:200px;height:50px" alt="Barcode"/>
                                                 </div>
-
-                                            <!--for  Code128 -->
-<!--                                                <div>-->
-<!--                                                    <img t-att-src="'/report/barcode/Code128/'+o.name"-->
-<!--                                                         style="width:150px;eight:75px" alt="Barcode"/>-->
-<!--                                                </div>-->
-
-                                              <!--for Bar Code -->
-<!--                                                <div>-->
-<!--                                                    <span t-field="o.name" t-options="{'widget':'barcode', 'width': 200, 'height': 100}"/>-->
-<!--                                                </div>-->
+                                                <!--for Bar Code -->
+                                                <!-- <div>-->
+                                                <!-- <span t-field="o.name" t-options="{'widget':'barcode', 'width': 200, 'height': 100}"/>-->
+                                                <!-- </div>-->
                                             </td>
                                         </tr>
                                     </table>
-                                    <h5 class="mt-5"><span>Appointment Detail</span></h5>
-                                    <table class="table">
-                                          <thead>
+                                    <h5 class="mt-5">
+                                        <span>Appointment Detail</span>
+                                    </h5>
+                                    <table class="table-bordered">
+                                        <thead>
                                             <tr>
-                                              <th scope="col">N0</th>
-                                              <th scope="col">Reference</th>
-                                              <th scope="col">Age</th>
-                                              <th scope="col">Doctor</th>
-                                              <th scope="col">Booking Date</th>
-                                              <th scope="col">Appointment Time</th>
+                                                <th scope="col">N0</th>
+                                                <th scope="col">Reference</th>
+                                                <th scope="col">Age</th>
+                                                <th scope="col">Doctor</th>
+                                                <th scope="col">Booking Date</th>
+                                                <th scope="col">Appointment Time</th>
                                             </tr>
-                                          </thead>
-                                          <tbody>
-                                              <!-- <t t-set="i" t-value="1" />-->
-                                              <t t-foreach="o.appointment_ids" t-as="appointment">
-                                                 <tr>
-                                                     <td>
-                                                         <span t-esc="appointment_index + 1"/>
-                                                         <!--<t t-set="i" t-value="i+1"/>-->
-                                                     </td>
-                                                     <td>
-                                                         <span t-field="appointment.ref"/>
-                                                     </td>
-                                                     <td>
-                                                         <span t-field="appointment.age"/>
-                                                     </td>
-                                                     <td>
-                                                         <span t-field="appointment.operation_id.name"/>
-                                                     </td>
-                                                     <td>
-                                                         <span t-field="appointment.booking_date"/>
-                                                     </td>
-                                                     <td>
-                                                          <span t-field="appointment.appointment_time"/>
-                                                     </td>
-                                                 </tr>
-                                              </t>
-                                          </tbody>
+                                        </thead>
+                                        <tbody>
+                                            <!-- <t t-set="i" t-value="1" />-->
+                                            <t t-foreach="o.appointment_ids" t-as="appointment">
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="appointment_index + 1"/>
+                                                        <!--<t t-set="i" t-value="i+1"/>-->
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="appointment.ref"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="appointment.age"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="appointment.operation_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="appointment.booking_date"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="appointment.appointment_time"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
-
                         </div>
                     </div> <!-- basic-template-->
                 </t>

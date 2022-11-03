@@ -36,15 +36,15 @@ class HospitalAppointment(models.Model):
 
     @api.onchange('patient_id')
     def _onchange_patient_id(self):
+
         self.ref = self.patient_id.ref
+        print(self.ref)
 
     # create serial number
     @api.model
     def create(self, vals_list):
-        print("Vals is", vals_list)
         self.env['ir.sequence'].next_by_code('hospital.appointment')
         res = super(HospitalAppointment, self).create(vals_list)
-
         sl_no = 0
         for line in res.pharmacy_ids:
             sl_no += 1

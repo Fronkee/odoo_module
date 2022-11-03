@@ -49,21 +49,6 @@
         </record>
         <!--   tree-view-end     -->
 
-        <record id="view_hospital_appointment_calendar" model="ir.ui.view">
-            <field name="name">hospital.appointment.calendar</field>
-            <field name="model">hospital.appointment</field>
-            <field name="arch" type="xml">
-                <calendar string="Appointment" date_start="booking_date" mode="month"  color="state" quick_add="False"
-                          hide_time="true" form_view_id="%(om_hospital.view_hospital_appointment_form)d"
-                          event_open_popup="True" event_limit="5">
-                         <!--  date_delay=""-->
-                    <field name="patient_id" filters="1" avatar_field="image"/>
-                    <field name="state" invisible="1" filters="1"/>
-                </calendar>
-            </field>
-        </record>
-       <!--  calendar-view-end      -->
-
         <record id="view_hospital_appointment_activity" model="ir.ui.view">
             <field name="name">hospital.appointment.activity</field>
             <field name="model">hospital.appointment</field>
@@ -138,7 +123,7 @@
                                         confirm="R u sure open patient view?" type="action" class="oe_highlight"/>
                             </group>
                             <group>
-                                <field name="ref" readonly="1" force_save="1"/>
+                                <field name="ref"  force_save="1"/>
                                 <field name="hide_sale_price" groups="base.group_no_one"/>
                                 <field name="gender"/>
                                 <field name="company_id" groups="base.group_multi_company"/>
@@ -196,6 +181,21 @@
             </field>
         </record>
         <!--        form-view-end -->
+
+        <record id="view_hospital_appointment_calendar" model="ir.ui.view">
+            <field name="name">hospital.appointment.calendar</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <calendar string="Appointment" date_start="booking_date" mode="month"  color="state" quick_add="False"
+                          hide_time="true" form_view_id="%(om_hospital.view_hospital_appointment_form)d"
+                          event_open_popup="True" event_limit="5">
+                         <!--  date_delay=""-->
+                    <field name="patient_id" filters="1" avatar_field="image"/>
+                    <field name="state" invisible="1" filters="1"/>
+                </calendar>
+            </field>
+        </record>
+       <!--  calendar-view-end      -->
 
          <record id="action_hospital_appointment" model="ir.actions.act_window">
               <field name="name">Appointment</field>
