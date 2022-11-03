@@ -1,0 +1,4 @@
+id,name,sequence,active
+hospital_tag_ceo,CEO,1,True
+hospital_tag_employee,Employee,2,True
+hospital_tag_student,Student,3,True

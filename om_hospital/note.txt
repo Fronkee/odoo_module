@@ -1,0 +1,113 @@
+postgresql pass =123
+
+ #scaffold
+ C:\Users\KIS\Desktop\odoo-15.0_com\venv\Scripts\python.exe ./odoo-bin scaffold om_odoo_inheritence custom_addons
+
+#shell
+	 python odoo-bin shell
+	 python odoo-bin shell -d db_name {or}
+	 python odoo-bin shell -d db_name -c [absolute path or --]odoo.conf
+		-- self, self.name, self.login, self.env['model_name'].search([]) , , self.env['model_name'].search_count([])
+		-- self.env.cr.commit()
+
+
+
+
+
+ 
+#
+ return super(HospitalManagement, self).create(vals_list)
+
+#    
+action = self.env.ref('om_hospital.action_cancel_appointment').read()[0]
+
+#
+super(SaleOrder, self).action_confirm()
+
+
+
+#ORM
+
+ self.env['model_name'].browse(id).name
+ self.env['model_name'].browse(id,id).mapped('name')
+ self.env['model_name'].browse(id).exists() 
+ 
+ #update data
+    self.env['model_name'].browse(id).write({'key' : 'value'})
+ 
+ # unlink data
+    self.env['model_name'].browse(id).unlink()
+
+ # search
+    self.env['model_name'].search([ ('gender', '=', 'male') ])
+    self.env['model_name'].search([ ('gender', '=', 'male') ]).name
+    self.env['model_name'].search([ '|', ('gender', '=', 'male'), ('id', '=', id) ])
+    self.env['model_name'].search([], limlit = 1, order="id desc")
+    self.env['model_name'].search_count([])
+    self.env['model_name'].search_count(['gender', '=', 'male']) 
+    self.env['model_name'].search_count(['gender', '=', 'male'], count=True) 
+
+# metadata
+       self.env['model_name'].browse(id).get_metadata() 
+       self.env['model_name'].browse(id).get_metadata()[0].get('id')  
+       self.env['model_name'].fields.get()
+       self.env['model_name'].fields.get(['name','gender'])
+	 self.env['....'].with_context(active_test=False).search_count([])
+
+
+# search 
+def _search_standard_price(self, operator, value):
+    products = self.env['product.product'].search([('standard_price', operator, value)], limit=None)
+    return [('id', 'in', products.mapped('product_tmpl_id').ids)]
+   
+
+
+# query
+        query = """select id,patient_id from hospital_appointment where id=%s""" % self.appointment_id.id
+        # self.env.cr.execute(query)
+        self._cr.execute(query)
+        patients = self.env.cr.dictfetchall()
+        print('Patients -------------->', patients)
+
+
+
+########################
+
+#       class A1(Model):                      Model
+#           _name = 'a'                       / | \
+#                                            A3 A2 A1   <- definition classes
+#       class A2(Model):                      \ | /
+#           _inherit = 'a'                      a       <- registry class: registry['a']
+#                                               |
+#       class A3(Model):                     records    <- model instances, like env['a']
+	    _inherit = 'a'
+
+
+
+#######################
+
+#       class A1(Model):
+#           _name = 'a'                       Model
+#                                            / / \ \
+#       class B1(Model):                    / /   \ \
+#           _name = 'b'                    / A2   A1 \
+#                                         B2  \   /  B1
+#       class B2(Model):                   \   \ /   /
+#           _name = 'b'                     \   a   /
+#           _inherit = ['a', 'b']            \  |  /
+#                                             \ | /
+#       class A2(Model):                        b
+#           _inherit = 'a'
+
+
+########################
+
+#       class A1(Model):                      Model
+#           _name = 'a'                        / \        
+#           foo = ...                         /   \      
+#           bar = ...                       A2     A1
+#                                            bar    foo, bar
+#       class A2(Model):                      \   /
+#           _inherit = 'a'                     \ /
+#           bar = ...                           a
+#                                                bar
