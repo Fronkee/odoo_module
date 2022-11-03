@@ -42,9 +42,8 @@ class HospitalAppointment(models.Model):
     @api.model
     def create(self, vals_list):
         print("Vals is", vals_list)
-        vals_list['ref'] = self.env['ir.sequence'].next_by_code('hospital.appointment')
+        self.env['ir.sequence'].next_by_code('hospital.appointment')
         res = super(HospitalAppointment, self).create(vals_list)
-        print('Serial number-----', res)
 
         sl_no = 0
         for line in res.pharmacy_ids:
@@ -55,7 +54,6 @@ class HospitalAppointment(models.Model):
     # update serial number
     def write(self, vals):
         res = super(HospitalAppointment, self).write(vals)
-        print("Write Serial ", res)
         sl_no = 0
         for line in self.pharmacy_ids:
             sl_no += 1
