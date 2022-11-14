@@ -48,8 +48,7 @@ super(SaleOrder, self).action_confirm()
     self.env['model_name'].search_count(['gender', '=', 'male'], count=True) 
 
 # metadata
-       self.env['model_name'].browse(id).get_metadata() 
-       self.env['model_name'].browse(id).get_metadata()[0].get('id')  
+       self.env['model_name'].browse(id).get_metadata() 1:33 PM 11/10/2022elf.env['model_name'].browse(id).get_metadata()[0].get('id')  
        self.env['model_name'].fields.get()
        self.env['model_name'].fields.get(['name','gender'])
 	 self.env['....'].with_context(active_test=False).search_count([])
@@ -111,3 +110,12 @@ def _search_standard_price(self, operator, value):
 #           _inherit = 'a'                     \ /
 #           bar = ...                           a
 #                                                bar
+
+
+
+
+
+
+################
+
+git clone <url> --branch 15.0 --depth 1
